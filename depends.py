@@ -1,3 +1,5 @@
+from typing import AsyncIterable
+
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -6,11 +8,12 @@ from repositories.feedback_repository import FeedbackRepository
 from repositories.order_repository import OrderRepository
 from repositories.project_repository import ProjectRepository
 from repositories.user_repository import UserRepository
+from services.feedback_services import FeedbackService
 from services.order_services import OrderService
 from services.project_services import ProjectService
 
 
-async def get_session() -> AsyncSession:
+async def get_session() -> AsyncIterable:
     async with async_session() as session:
         yield session
 
@@ -18,8 +21,13 @@ async def get_session() -> AsyncSession:
 async def get_feedback_repository(
         session: AsyncSession = Depends(get_session)
 ) -> FeedbackRepository:
-    # TODO check for validity service layer
     return FeedbackRepository(session)
+
+
+async def get_feedback_service(
+        repository=Depends(get_feedback_repository)
+) -> FeedbackService:
+    return FeedbackService(repository)
 
 
 async def get_project_repository(

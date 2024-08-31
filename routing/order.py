@@ -3,10 +3,11 @@ from typing import Annotated, Literal
 
 from fastapi import APIRouter, UploadFile, Depends, Form, File
 
+from bot_configuration import send_message
 from depends import get_order_service
 from schemas.order_schema import OrderSchema
 from services.order_services import OrderService
-
+from config import CHAT_ID
 
 router = APIRouter(prefix='/order')
 logger = logging.getLogger(__name__)
@@ -37,6 +38,8 @@ async def order(
         customer_number=customer_number,
         customer_email=customer_email,
     )
+
+
     await order_service.create_order(new_order, tor_file=tor_file)
 
     return new_order

@@ -21,6 +21,6 @@ DB_NAME = os.environ.get('DB_NAME')
 PROJECT_IMAGES_UPLOAD_DIR = 'uploads/projects'
 ORDER_FILES_UPLOAD_DIR = 'uploads/tor_files'
 
-
-
+BOT_TOKEN = os.environ.get('BOT_TOKEN')
+CHAT_ID = os.environ.get('TELEGRAM_ID')
 

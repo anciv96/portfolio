@@ -21,7 +21,7 @@ order_data = {
 
 async def create_order(service, tor_file: UploadFile) -> None:
     new_order = OrderSchema(**order_data)
-    await service.create_order(new_order, tor_file)
+    await service.create_order_and_send_message(new_order, tor_file)
 
 
 @pytest.mark.anyio

@@ -18,71 +18,58 @@ logger = logging.getLogger(__name__)
 class OrderService:
     def __init__(self, repository: OrderRepository):
         self.repository = repository
+        self.file_service = FileService()
+        self.notification_service = NotificationService()
 
-    async def create_order(self, order: OrderSchema, tor_file: UploadFile = None):
-        try:
-            file_location = await self._save_file_to_server(tor_file) if tor_file else None
+    async def create_order_and_send_message(self, order: OrderSchema, tor_file: UploadFile = None):
+        file_location = await self.file_service.save_file(ORDER_FILES_UPLOAD_DIR, tor_file) if tor_file else None
 
-            message_text = await self._create_message_text(order)
-            await self._send_message(CHAT_ID, message_text, document=file_location)
-
-        except (OrderTorFileNotFoundError, OrderTorFilePermissionError, OrderTorFileIOError):
-            file_location = None
-
+        message_text = await self.notification_service.create_message_text(order)
+        await self.notification_service.send_message(CHAT_ID, message_text, document=file_location)
         await self.repository.create_order(order, file_location)
 
+
+class NotificationService:
     @staticmethod
-    async def _save_file_to_server(tor_file) -> str | bytes:
-        try:
-            file_location = os.path.join(ORDER_FILES_UPLOAD_DIR, tor_file.filename)
-            async with async_open(file_location, 'wb') as file:
-                await file.write(await tor_file.read())
-
-            return file_location
-        except FileNotFoundError as error:
-            logger.error(error)
-            raise OrderTorFileNotFoundError(error)
-        except PermissionError as error:
-            logger.error(error)
-            raise OrderTorFileNotFoundError(error)
-        except IOError as error:
-            logger.error(error)
-            raise OrderTorFileIOError(error)
-
-
-    async def _create_message_text(self, order: OrderSchema) -> str:
-        message = ['Новый заказ\n\n']
-
-        await self._check_if_attribute_exists(message, pre='<b>Тип проекта</b>', attribute=order.project_type)
-        await self._check_if_attribute_exists(message, pre='<b>Бюджет</b>', attribute=order.budget)
-        await self._check_if_attribute_exists(message, pre='<b>Описание</b>', attribute=order.description)
-        await self._check_if_attribute_exists(message, pre='<b>Имя заказчика</b>', attribute=order.customer_name)
-        await self._check_if_attribute_exists(message, pre='<b>Номер заказчика</b>', attribute=order.customer_number)
-        await self._check_if_attribute_exists(message, pre='<b>Email заказчика</b>', attribute=order.customer_email)
-
-        return message[0]
+    async def create_message_text(order: OrderSchema) -> str:
+        attributes = {
+            '<b>Тип проекта</b>': order.project_type,
+            '<b>Бюджет</b>': order.budget,
+            '<b>Описание</b>': order.description,
+            '<b>Имя заказчика</b>': order.customer_name,
+            '<b>Номер заказчика</b>': order.customer_number,
+            '<b>Email заказчика</b>': order.customer_email,
+        }
+        message = 'Новый заказ\n\n'
+        for pre, attribute in attributes.items():
+            if attribute:
+                message += f'{pre}: {attribute}\n'
+        return message
 
     @staticmethod
-    async def _check_if_attribute_exists(message: list, pre: str, attribute):
-        # TODO rename
-        try:
-            message[0] += f'{pre}: {attribute}\n'
-        except AttributeError as error:
-            logger.error(error)
-
-    @staticmethod
-    async def _send_message(chat_id: int, message: str, document=None) -> None:
+    async def send_message(chat_id: int, message: str, document: str | bytes = None) -> None:
         if document:
             input_file = FSInputFile(document)
-
-            await bot.send_document(
-                chat_id=chat_id,
-                document=input_file,
-                caption=message
-            )
+            await bot.send_document(chat_id=chat_id, document=input_file, caption=message)
         else:
-            await bot.send_message(
-                chat_id=chat_id,
-                text=str(message)
-            )
+            await bot.send_message(chat_id=chat_id, text=message)
 
+
+class FileService:
+    async def save_file(self, upload_dir: str, tor_file: UploadFile) -> str:
+        file_location = os.path.join(upload_dir, tor_file.filename)
+        try:
+            async with async_open(file_location, 'wb') as file:
+                await file.write(await tor_file.read())
+            return file_location
+        except FileNotFoundError as error:
+            self._handle_exception(OrderTorFileNotFoundError, error, file_location)
+        except PermissionError as error:
+            self._handle_exception(OrderTorFilePermissionError, error, file_location)
+        except IOError as error:
+            self._handle_exception(OrderTorFileIOError, error, file_location)
+
+    @staticmethod
+    def _handle_exception(exception_cls, error, file_location):
+        logger.error(f'Error saving file at {file_location}: {error}')
+        raise exception_cls(error)

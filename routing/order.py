@@ -37,7 +37,7 @@ async def order(
         customer_email=customer_email,
     )
 
-    await order_service.create_order(new_order, tor_file=tor_file)
+    await order_service.create_order_and_send_message(new_order, tor_file=tor_file)
 
     return new_order
 

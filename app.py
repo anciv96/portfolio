@@ -1,5 +1,3 @@
-import logging.config
-
 from fastapi import FastAPI
 from sqladmin import Admin
 
@@ -14,30 +12,6 @@ from config import JWT_KEY
 from services.user_services import AdminAuth
 
 
-LOGGING_CONFIG = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "default": {
-            "format": "%(asctime)s - %(name)s:%(lineno)s - %(levelname)s - %(message)s",
-        },
-    },
-    "handlers": {
-        "file": {
-            "class": "logging.FileHandler",
-            "filename": "app.log",
-            "formatter": "default",
-        },
-    },
-    "loggers": {
-        "": {
-            "level": "WARNING",
-            "handlers": ["file"],
-        },
-    },
-}
-logging.config.dictConfig(LOGGING_CONFIG)
-
 app = FastAPI(title='Portfolio')
 app.include_router(feedbacks.router)
 app.include_router(projects.router)
@@ -48,6 +22,7 @@ async def init_admin():
     user_repository = await create_user_repository()
     authentication_backend = AdminAuth(secret_key=JWT_KEY, user_repository=user_repository)
     admin = Admin(app=app, engine=engine, authentication_backend=authentication_backend)
+
     admin.add_view(FeedbackAdmin)
     admin.add_view(UserAdmin)
     admin.add_view(ProjectAdmin)

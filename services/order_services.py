@@ -2,10 +2,11 @@ import logging
 import os.path
 
 from aiofiles import open as async_open
+from aiogram.types import FSInputFile
 from fastapi import UploadFile
 
-from bot_configuration import send_message
 from config import ORDER_FILES_UPLOAD_DIR, CHAT_ID
+from dispatcher import bot
 from exceptions.order_exceptions import OrderTorFileNotFoundError, OrderTorFilePermissionError, OrderTorFileIOError
 from repositories.order_repository import OrderRepository
 from schemas.order_schema import OrderSchema
@@ -17,6 +18,18 @@ logger = logging.getLogger(__name__)
 class OrderService:
     def __init__(self, repository: OrderRepository):
         self.repository = repository
+
+    async def create_order(self, order: OrderSchema, tor_file: UploadFile = None):
+        try:
+            file_location = await self._save_file_to_server(tor_file) if tor_file else None
+
+            message_text = await self._create_message_text(order)
+            await self._send_message(CHAT_ID, message_text, document=file_location)
+
+        except (OrderTorFileNotFoundError, OrderTorFilePermissionError, OrderTorFileIOError):
+            file_location = None
+
+        await self.repository.create_order(order, file_location)
 
     @staticmethod
     async def _save_file_to_server(tor_file) -> str | bytes:
@@ -36,20 +49,40 @@ class OrderService:
             logger.error(error)
             raise OrderTorFileIOError(error)
 
-    async def create_order(self, order: OrderSchema, tor_file: UploadFile = None):
+
+    async def _create_message_text(self, order: OrderSchema) -> str:
+        message = ['Новый заказ\n\n']
+
+        await self._check_if_attribute_exists(message, pre='<b>Тип проекта</b>', attribute=order.project_type)
+        await self._check_if_attribute_exists(message, pre='<b>Бюджет</b>', attribute=order.budget)
+        await self._check_if_attribute_exists(message, pre='<b>Описание</b>', attribute=order.description)
+        await self._check_if_attribute_exists(message, pre='<b>Имя заказчика</b>', attribute=order.customer_name)
+        await self._check_if_attribute_exists(message, pre='<b>Номер заказчика</b>', attribute=order.customer_number)
+        await self._check_if_attribute_exists(message, pre='<b>Email заказчика</b>', attribute=order.customer_email)
+
+        return message[0]
+
+    @staticmethod
+    async def _check_if_attribute_exists(message: list, pre: str, attribute):
+        # TODO rename
         try:
-            file_location = await self._save_file_to_server(tor_file) if tor_file else None
+            message[0] += f'{pre}: {attribute}\n'
+        except AttributeError as error:
+            logger.error(error)
 
-            message_text = (f'Новый заказ\n\n'
-                            f'<b>Тип проекта</b>: {order.project_type}\n'
-                            f'<b>Бюджет</b>: {order.budget}\n'
-                            f'<b>Описание</b>: {order.description}\n'
-                            f'<b>Имя заказчика</b>: {order.customer_name}\n'
-                            f'<b>Номер заказчика</b>: {order.customer_number}\n'
-                            f'<b>Email заказчика</b>: {order.customer_email}')
-            await send_message(CHAT_ID, message_text, document=file_location)
+    @staticmethod
+    async def _send_message(chat_id: int, message: str, document=None) -> None:
+        if document:
+            input_file = FSInputFile(document)
 
-        except (OrderTorFileNotFoundError, OrderTorFilePermissionError, OrderTorFileIOError):
-            file_location = None
+            await bot.send_document(
+                chat_id=chat_id,
+                document=input_file,
+                caption=message
+            )
+        else:
+            await bot.send_message(
+                chat_id=chat_id,
+                text=str(message)
+            )
 
-        await self.repository.create_order(order, file_location)

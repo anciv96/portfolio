@@ -11,61 +11,6 @@ from schemas.user_schema import UserSchema
 logger = logging.getLogger(__name__)
 
 
-class PasswordService:
-    """Сервис для работы с паролями, включающий проверку пароля."""
-    @staticmethod
-    def verify_password(plain_password: str, hashed_password: str) -> bool:
-        """
-        Сравнивает обычный пароль с его хешем.
-
-        Args:
-            plain_password (str): Обычный пароль, введённый пользователем.
-            hashed_password (str): Хешированный пароль, сохранённый в базе данных.
-
-        return:
-            bool: return True, если пароль совпадает с хешем, иначе False.
-        """
-        return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
-
-
-class SessionService:
-    """Сервис для работы с сессиями, включающий управление и проверку сессий."""
-
-    @staticmethod
-    def update_user_session(request: Request, username: str) -> None:
-        """
-        Обновляет сессию пользователя, сохраняя имя пользователя в сессии.
-
-        Args:
-            request (Request): Объект запроса, содержащий сессию.
-            username (str): Имя пользователя, которое будет сохранено в сессии.
-        """
-        request.session.update({"token": username})
-
-    @staticmethod
-    def clear_session(request: Request) -> None:
-        """
-        Очищает текущую сессию пользователя.
-
-        Args:
-            request (Request): Объект запроса, содержащий сессию.
-        """
-        request.session.clear()
-
-    @staticmethod
-    def is_authenticated(request: Request) -> bool:
-        """
-        Проверяет, аутентифицирован ли пользователь на основе сессии.
-
-        Args:
-            request (Request): Объект запроса, содержащий сессию.
-
-        return:
-            bool: return True, если пользователь аутентифицирован, иначе False.
-        """
-        return request.session.get("token") is not None
-
-
 class AdminAuth(AuthenticationBackend):
     """
     Класс аутентификации для админ-панели, использующий хэширование паролей и сессии.
@@ -129,3 +74,59 @@ class AdminAuth(AuthenticationBackend):
         except UserNotFoundError:
             logger.warning(f"User '{username}' not found")
             return None
+
+
+class PasswordService:
+    """Сервис для работы с паролями, включающий проверку пароля."""
+    @staticmethod
+    def verify_password(plain_password: str, hashed_password: str) -> bool:
+        """
+        Сравнивает обычный пароль с его хешем.
+
+        Args:
+            plain_password (str): Обычный пароль, введённый пользователем.
+            hashed_password (str): Хешированный пароль, сохранённый в базе данных.
+
+        return:
+            bool: return True, если пароль совпадает с хешем, иначе False.
+        """
+        return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+
+
+class SessionService:
+    """Сервис для работы с сессиями, включающий управление и проверку сессий."""
+
+    @staticmethod
+    def update_user_session(request: Request, username: str) -> None:
+        """
+        Обновляет сессию пользователя, сохраняя имя пользователя в сессии.
+
+        Args:
+            request (Request): Объект запроса, содержащий сессию.
+            username (str): Имя пользователя, которое будет сохранено в сессии.
+        """
+        request.session.update({"token": username})
+
+    @staticmethod
+    def clear_session(request: Request) -> None:
+        """
+        Очищает текущую сессию пользователя.
+
+        Args:
+            request (Request): Объект запроса, содержащий сессию.
+        """
+        request.session.clear()
+
+    @staticmethod
+    def is_authenticated(request: Request) -> bool:
+        """
+        Проверяет, аутентифицирован ли пользователь на основе сессии.
+
+        Args:
+            request (Request): Объект запроса, содержащий сессию.
+
+        return:
+            bool: return True, если пользователь аутентифицирован, иначе False.
+        """
+        return request.session.get("token") is not None
+

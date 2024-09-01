@@ -16,12 +16,12 @@ class FeedbackRepository:
         self.session = session
 
     async def get_feedbacks(self) -> list[FeedbackSchema]:
-        """Получает все данные из базы данных"""
+        """Получает все отзывы из базы данных"""
         try:
             response = await self.session.execute(select(Feedback))
             feedbacks = response.scalars().all()
             result = [FeedbackSchema.from_orm(feedback) for feedback in feedbacks]
             return result
         except InvalidRequestError as error:
-            logger.error(error)
-
+            logger.error(f"Error fetching feedbacks from database: {error}")
+            return []

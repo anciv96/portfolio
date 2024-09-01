@@ -42,6 +42,7 @@ class OrderService:
 
         message_text = await self.notification_service.create_message_text(order)
         await self.notification_service.telegram_notifier(CHAT_ID, message_text, document=file_location)
+
         await self.repository.create_order(order, file_location)
 
 

@@ -14,7 +14,8 @@ class OrderRepository:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_order(self, order: OrderSchema, tor_file_path=None) -> Order:
+    async def create_order(self, order: OrderSchema, tor_file_path=None) -> Order | None:
+        """Создает новый заказ в базе данных."""
         try:
             new_order = Order(
                 project_type=order.project_type,
@@ -27,7 +28,7 @@ class OrderRepository:
             )
             self.session.add(new_order)
             await self.session.commit()
-
             return new_order
         except StatementError as error:
-            logger.error(error)
+            await self.session.rollback()
+            logger.error(f"Error creating order: {error}")

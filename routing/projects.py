@@ -17,7 +17,7 @@ async def get_projects(
         request: Request,
         project_service: Annotated[ProjectService, Depends(get_project_service)]
 ) -> list[ProjectSchema]:
-    """Получает все проекты из бд"""
+    """Получает все проекты из базы данных"""
     try:
         projects = await project_service.get_projects(request)
         return projects

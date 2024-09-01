@@ -25,7 +25,15 @@ class ProjectRepository:
         except Exception as error:
             logging.error(error)
 
-    async def get_project(self, project_id) -> ProjectSchema | None:
+    async def get_project(self, project_id: int) -> ProjectSchema | None:
+        """Получает проект по ID из базы данных.
+
+        Args:
+            project_id (int): id проекта.
+
+        Returns:
+            ProjectSchema: Схема, представляющая проект.
+        """
         try:
             project = await self.session.get(Project, project_id)
             if project:

@@ -33,7 +33,7 @@ class ProjectService:
         ]
         return result
 
-    async def get_project(self, project_id) -> ProjectSchema:
+    async def get_project(self, project_id: int) -> ProjectSchema:
         """
         Получает определенный проект из базы данных по его идентификатору.
 

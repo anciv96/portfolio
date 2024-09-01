@@ -1,7 +1,7 @@
 import logging
 from typing import Annotated, Literal
 
-from fastapi import APIRouter, UploadFile, Depends, Form, File
+from fastapi import APIRouter, UploadFile, Depends, Form, File, HTTPException, status
 
 from depends import get_order_service
 from schemas.order_schema import OrderSchema
@@ -27,6 +27,9 @@ async def order(
     customer_email: str = Form(...),
     tor_file: UploadFile = File(None),
 ):
+    """
+    Создание нового заказа и отправка уведомления в Telegram-бот.
+    """
     # TODO check if order_service is required in ui
     new_order = OrderSchema(
         project_type=project_type,
@@ -36,8 +39,12 @@ async def order(
         customer_number=customer_number,
         customer_email=customer_email,
     )
-
-    await order_service.create_order_and_send_message(new_order, tor_file=tor_file)
-
+    try:
+        await order_service.create_order_and_send_message(new_order, tor_file=tor_file)
+    except Exception as error:
+        logger.error(f"Error creating order: {error}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred while creating the order."
+        )
     return new_order
-

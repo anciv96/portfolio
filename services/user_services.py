@@ -8,49 +8,59 @@ from exceptions.user_exceptions import UserNotFoundError
 from repositories.user_repository import UserRepository
 from schemas.user_schema import UserSchema
 
-
 logger = logging.getLogger(__name__)
 
 
-class AdminAuth(AuthenticationBackend):
-    def __init__(self, secret_key: str, user_repository: UserRepository):
-        super().__init__(secret_key)
-        self.user_repository = user_repository
+class PasswordService:
+    @staticmethod
+    def verify_password(plain_password: str, hashed_password: str) -> bool:
+        return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+
+
+class SessionService:
+    @staticmethod
+    def update_user_session(request: Request, username: str) -> None:
+        request.session.update({"token": username})
 
     @staticmethod
-    async def _update_user_session(user: UserSchema, form, request: Request) -> bool:
-        """Обновляет сессии пользователя, после логина"""
-        if not user:
-            return False
+    def clear_session(request: Request) -> None:
+        request.session.clear()
 
-        username = form['username']
-        password = form['password']
+    @staticmethod
+    def is_authenticated(request: Request) -> bool:
+        return request.session.get("token") is not None
 
-        if user and bcrypt.checkpw(password.encode('utf-8'), user.hashed_password.encode('utf-8')):
+
+class AdminAuth(AuthenticationBackend):
+    def __init__(self,
+                 secret_key: str,
+                 user_repository: UserRepository,
+                 ):
+        super().__init__(secret_key)
+        self.user_repository = user_repository
+        self.password_service = PasswordService()
+        self.session_service = SessionService()
+
+    async def login(self, request: Request) -> bool:
+        form = await request.form()
+        user = await self._get_user(form['username'])
+
+        if user and self.password_service.verify_password(form['password'], user.hashed_password):
             if user.is_admin:
-                request.session.update({"token": username})
+                self.session_service.update_user_session(request, user.username)
                 return True
         return False
 
-    async def _get_user(self, form) -> UserSchema | bool:
-        try:
-            user = await self.user_repository.get_user(form['username'])
-            return user
-        except UserNotFoundError:
-            return False
-
-    async def login(self, request: Request) -> bool:
-
-        form = await request.form()
-        user = await self._get_user(form)
-        update_session = await self._update_user_session(user, form, request)
-        return update_session
-
     async def logout(self, request: Request) -> bool:
-        request.session.clear()
+        self.session_service.clear_session(request)
         return True
 
     async def authenticate(self, request: Request) -> bool:
-        token = request.session.get("token")
-        return token is not None
+        return self.session_service.is_authenticated(request)
 
+    async def _get_user(self, username: str) -> UserSchema | None:
+        try:
+            return await self.user_repository.get_user(username)
+        except UserNotFoundError:
+            logger.warning(f"User '{username}' not found")
+            return None

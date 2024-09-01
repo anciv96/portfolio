@@ -3,11 +3,23 @@ from schemas.project_schema import ProjectSchema
 
 
 class ProjectService:
+    """
+    Сервис для работы с проектами в портфолио.
+    Содержит методы для получения всех проектов и отдельного проекта из базы данных.
+    """
     def __init__(self, repository: ProjectRepository):
         self.repository = repository
 
     async def get_projects(self, request) -> list[ProjectSchema]:
-        """Получает все проекты из бд"""
+        """
+        Получает все проекты из базы данных и возвращает их в виде списка схем.
+
+        Args:
+            request (Request): Объект запроса, используемый для генерации URL изображений.
+
+        Returns:
+            list[ProjectSchema]: Список схем, представляющих проекты.
+        """
         projects = await self.repository.get_projects()
 
         result = [
@@ -22,6 +34,15 @@ class ProjectService:
         return result
 
     async def get_project(self, project_id) -> ProjectSchema:
+        """
+        Получает определенный проект из базы данных по его идентификатору.
+
+        Args:
+            project_id (int): Идентификатор проекта.
+
+        Returns:
+            ProjectSchema: Схема, представляющая проект.
+        """
         project = await self.repository.get_project(project_id)
 
         return project

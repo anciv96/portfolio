@@ -7,10 +7,10 @@ class User(Base):
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
-    email = Column(String)
-    username = Column(String)
-    hashed_password = Column(String)
-    is_admin = Column(Boolean)
+    email = Column(String, nullable=False)
+    username = Column(String, nullable=False)
+    hashed_password = Column(String, nullable=False)
+    is_admin = Column(Boolean, nullable=False)
 
     def __repr__(self) -> str:
         return str(self.username)

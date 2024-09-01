@@ -15,10 +15,10 @@ class Project(Base):
     __tablename__ = 'project'
 
     id = Column(Integer, primary_key=True)
-    title = Column(String(255))
-    description = Column(Text())
-    image_path = Column(ImageType(storage=storage))
-    url = Column(String())
+    title = Column(String(255), nullable=False)
+    description = Column(Text(), nullable=True)
+    image_path = Column(ImageType(storage=storage), nullable=False)
+    url = Column(String(), nullable=True)
     date = Column('created_on', DateTime, default=datetime.now)
 
     def __repr__(self) -> str:

@@ -8,6 +8,7 @@ from schemas.project_schema import ProjectSchema
 from services.project_services import ProjectService
 from depends import get_project_repository, get_project_service
 
+
 router = APIRouter(prefix='/projects', tags=['Project'])
 logger = logging.getLogger(__name__)
 

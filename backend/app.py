@@ -16,17 +16,18 @@ from services.user_services import AdminAuth
 def init_cors(app):
     origins = [
         "http://127.0.0.1:3000",
-        "http://localhost:3000"
+        "http://localhost:3000",
+        "http://192.168.0.153:3000",
+
     ]
 
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=['*'],
+        allow_origins=origins,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
 
 
 def create_app() -> FastAPI:

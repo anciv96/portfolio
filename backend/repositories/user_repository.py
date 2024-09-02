@@ -45,4 +45,3 @@ class UserRepository:
         except AttributeError as error:
             logger.exception(error)
             raise UserNotFoundError(error)
-

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, HttpUrl, Field, field_validator
+from pydantic import BaseModel, HttpUrl, Field
 
 
 class FeedbackSchema(BaseModel):

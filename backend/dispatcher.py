@@ -1,6 +1,6 @@
 import logging.config
 
-from aiogram import Bot, types
+from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 

@@ -1,10 +1,5 @@
-import logging
-
 from schemas.feedback_schema import FeedbackSchema
 from repositories.feedback_repository import FeedbackRepository
-
-
-logger = logging.getLogger(__name__)
 
 
 class FeedbackService:
@@ -16,4 +11,3 @@ class FeedbackService:
         """Обрабатывает все полученные из бд данные"""
         result = await self.repository.get_feedbacks()
         return result
-

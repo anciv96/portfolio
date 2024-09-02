@@ -7,6 +7,7 @@ from services.feedback_services import FeedbackService
 from schemas.feedback_schema import FeedbackSchema
 from depends import get_feedback_service
 
+
 router = APIRouter(prefix='/feedbacks', tags=['Feedback'])
 logger = logging.getLogger(__name__)
 

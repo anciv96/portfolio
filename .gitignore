@@ -1,17 +1,20 @@
 .env
-.idea
+.idea/
 .venv/
-.pytest_cache
+.pytest_cache/
 __pycache__/
 *.log
 *.pyc
+migrations/versions/
+*.jpg
+*.jpeg
+*.png
 
-
-/node_modules
+node_modules/
 /.pnp
 .pnp.js
-/coverage
-/build
+coverage/
+build/
 .DS_Store
 .env.local
 .env.development.local

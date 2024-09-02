@@ -31,7 +31,6 @@ async def order(
     """
     Создание нового заказа и отправка уведомления в Telegram-бот.
     """
-    # TODO check if order_service is required in ui
     new_order = OrderSchema(
         project_type=project_type,
         budget=budget,

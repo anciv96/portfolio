@@ -22,3 +22,4 @@ ORDER_FILES_UPLOAD_DIR = 'uploads/tor_files'
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 CHAT_ID = os.environ.get('TELEGRAM_ID')
 
+ORIGINS = os.getenv("ALLOWED_ORIGINS").split(",")

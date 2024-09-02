@@ -1,0 +1,152 @@
+// width 1280
+$img_height: 23rem; 
+
+.main__portfolio{
+    margin-top: 6.4rem;
+
+    h2{
+        font-size: 2.25rem;
+        margin-bottom: 2rem;
+    }
+    .main__portfolio_content{
+        display: flex;
+        justify-content: space-between;
+        .portfolio_projects{
+            width: 55%;
+            .project_item{
+                img{
+                    height: $img_height;
+                    width: 100%;
+                    max-width: 40rem;
+                    margin-bottom: 3rem;
+                    border: 1px solid #fff;
+                    object-fit: cover;
+                }
+                h3{
+                    margin-bottom: 1rem;
+                    font-size: 1.25rem;
+                    font-family: "Anonymous Pro", monospace;
+
+                }
+                p{
+                    font-weight: 400;
+                    font-family: "Anonymous Pro", monospace;
+                    color: #B4B4B4;
+
+                }
+            }
+            .MuiBox-root{
+                padding: 0px;
+            }
+        }
+        .portfolio_tabs_menu{
+            max-width: 30%;
+            max-height: $img_height;
+            color: #fff;
+            padding-right: 0;
+            margin: 0;
+            .portfolio_tab{
+                color: #B4B4B4;
+                font-family: "Anonymous Pro", monospace;
+                font-size: 1rem;
+                min-width: 0;
+                max-width: 100%;
+                padding-right: 0;
+            }
+            .Mui-selected{
+                color: #fff;
+            }
+            .MuiTabs-flexContainer{
+                display: flex;
+                align-items: flex-end;
+                flex-wrap: inherit;
+            }
+        }
+    }
+}
+@media screen and (max-width: 1350px) {
+    .main__portfolio{
+        .main__portfolio_content{
+            .portfolio_projects{
+                .project_item{
+                    img{
+                        height: 20rem;
+                        
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .main__portfolio{
+        margin-top: 5rem;
+    
+        h2{
+            font-size: 2rem;
+        }
+        .main__portfolio_content{
+            flex-direction: column;
+            .portfolio_projects{
+                width: 100%;
+                margin-bottom: 2rem;
+                .project_item{
+                    img{
+                        height: 30rem;
+                        max-width: 80rem;
+                        margin-bottom: 1rem;
+                    }
+                    h3{
+                        margin-bottom: 0rem;
+                    }
+                }
+            }
+            .portfolio_tabs_menu{
+                max-width: 100%;
+                max-height: 30rem;
+                .portfolio_tab{
+                    padding: 0;
+                    margin: 0.25rem 0;
+                    min-height: 0;
+                }
+                .MuiTabs-flexContainer{
+                    align-items: flex-start;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .main__portfolio{
+        margin-top: 3rem;
+        .main__portfolio_content{
+            .portfolio_projects{
+                .project_item{
+                    img{
+                        height: 23rem;
+                        max-width: 80rem;
+                        margin-bottom: 1rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .main__portfolio{
+        .main__portfolio_content{
+            .portfolio_projects{
+                .project_item{
+                    img{
+                        height: 15rem;
+                        max-width: 80rem;
+                        margin-bottom: 1rem;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,119 @@
+.popup_container{
+
+    h3{
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    div{
+        font-size: 1rem;
+        p{
+            margin-bottom: .5rem;
+        }
+        .choices{
+            .choice{
+                color: #fff;
+            	font-family: "Anonymous Pro", monospace;
+                font-size: 1rem;
+                text-transform: none;
+                border: 1px solid #b4b4b4;
+                border-radius: 5px;
+                padding: .5rem 1rem; 
+            }
+            .Mui-selected{
+                background-color: rgb(108, 108, 108);
+            }
+        }
+    }
+    .project_type{
+        .choices{
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            .choice{
+                width: 100%;
+            }
+        }
+    }
+    .project_budget{
+        .choices{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 1rem;
+        }
+    }
+    .project_description{
+        margin-bottom: 1.5rem;
+        textarea{
+            font-family: "Anonymous Pro", monospace;
+        }
+    }
+    .project_tor{
+        margin-bottom: 1.5rem;
+
+        .input_tor_section{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            p{
+                font-size: .9rem;
+            }
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .custom-file-upload {
+            border: 1px solid #ccc;
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    }
+
+    .customer_info{
+        margin-bottom: 2.5rem;
+        .customer_info_inputs{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto;
+            gap: 1rem;
+            input:last-child{
+                grid-column: span 2;
+            }
+            input{
+                width: 100%;
+                height: 3rem;
+                color: #fff;
+                background-color: transparent;
+            	font-family: "Anonymous Pro", monospace;
+                font-size: 1rem;
+                text-transform: none;
+                border: 1px solid #b4b4b4;
+                border-radius: 5px;
+                padding: .5rem 1rem; 
+            }
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+            }
+        }
+    }
+    .send_project{
+        display: flex;
+        justify-content: center;
+        button{
+            padding: 1rem 2rem; 
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #000;
+            background: #fff !important;
+
+
+        }
+    }
+
+}
+

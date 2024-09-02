@@ -1,0 +1,131 @@
+.main__about_me{
+    margin-top: 10rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .about_me_info{
+        width: 47%;
+        h4{
+            margin-bottom: 3rem;
+            font-size: 1.5rem;
+            b {
+                color: #006F06;
+            }
+        }
+        .about_me_text{
+            color: #B4B4B4;
+            letter-spacing: 0.04rem;
+            line-height: 120%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            .about_me_text_item{
+                span {
+                    text-decoration: underline;
+                    text-decoration-style: dotted;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+    .about_me_photo{
+        width: 42%;
+        height: 27rem;
+        border: 2px solid #fff;
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}
+
+@media screen and (max-width: 1350px) {
+    .main__about_me{
+        .about_me_photo{
+            width: 35%;
+            height: 25rem;
+        }
+    }
+}
+@media screen and (max-width: 1000px) {
+    .main__about_me{
+        font-size: .875rem;
+        margin-top: 7rem;
+        .about_me_photo{
+            width: 45%;
+            height: 20rem;
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .main__about_me{
+        margin-top: 5rem;
+        .about_me_info{
+            width: 47%;
+            h4{
+                margin-bottom: 2.5rem;
+            }
+            .about_me_text{
+                gap: .75rem;
+            }
+        }
+        .about_me_photo{
+            width: 45%;
+            height: 20rem;
+        }
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .main__about_me{
+        display: flex;
+        flex-direction: column;
+        flex-flow: column-reverse;
+        align-items: start;
+        gap: 2rem;
+        margin-top: 5rem;
+        .about_me_info{
+            width: 100%;
+            h4{
+                margin-bottom: 1.75rem;
+                font-size: 1.15rem;
+            }
+            .about_me_text{
+                gap: 1rem;
+            }
+        }
+         .about_me_photo{
+            width: 100%;
+            height: 20rem;
+        }
+
+    }
+}
+
+
+@media screen and (max-width: 500px) {
+    .main__about_me{
+        display: flex;
+        flex-direction: column;
+        flex-flow: column-reverse;
+        align-items: start;
+        gap: 2rem;
+        margin-top: 7.5rem;
+        .about_me_info{
+            width: 100%;
+            h4{
+                margin-bottom: 1.75rem;
+                font-size: 1.15rem;
+            }
+            .about_me_text{
+                gap: 1rem;
+            }
+        }
+         .about_me_photo{
+            width: 100%;
+            height: 20rem;
+        }
+    }
+}

@@ -1,0 +1,67 @@
+header{
+    position: sticky;
+    z-index: 9;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 2rem 6.875rem;
+    background: #131313;
+    font-size: 1rem;
+    .menu{
+        width: 40%;
+    }
+}
+
+@media screen and (max-width: 1350px) {
+    header{
+        padding: 2rem 5rem;
+        .menu{
+            width: 40%;
+        }
+    }
+    
+}
+
+
+@media screen and (max-width: 1150px) {
+    header{
+        font-size: .875rem;
+        padding: 2rem 3.5rem;
+        .header__connect_btn{
+            button{
+                padding: .875rem 2rem;
+    
+            }
+        }
+    }
+    
+}
+
+@media screen and (max-width: 1000px) {
+    header{
+        .menu{
+            display: none;
+        }
+        .header__connect_btn{
+            display: none;
+        }
+    }
+}
+
+
+@media screen and (max-width: 800px) {
+    header{
+        padding: 2rem;
+
+    }
+}
+
+
+@media screen and (max-width: 500px) {
+    header{
+        padding: 1rem;
+    }
+}

@@ -1,0 +1,45 @@
+// width: 1280px 
+$sides-padding-1280: 6.875rem;
+
+footer{
+    display: flex;
+    justify-content: space-between;
+    padding: 6rem $sides-padding-1280;
+    align-items: center;
+
+    ul{
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+        li{
+            margin-bottom: 1.5rem;
+        }
+    }
+}
+
+
+@media screen and (max-width: 1350px) {
+    footer{
+        padding: 2rem 5rem;
+    }
+    
+}
+
+@media screen and (max-width: 1150px) {
+    footer{
+        padding: 2rem 3.5rem;
+		font-size: .875rem;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    footer{
+        padding: 2rem;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    footer{
+        padding: 1rem;
+    }
+}

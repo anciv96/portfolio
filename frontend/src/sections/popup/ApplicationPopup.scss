@@ -1,0 +1,60 @@
+
+.popup{
+    .MuiDialog-container{
+        .MuiPaper-root{
+            width: 100%;
+            max-width: 45vw;
+        }
+    }
+    .popup_container{
+        background: rgb(29, 29, 29);
+        color: #fff;
+        padding: 2.4rem;
+        font-family: "Anonymous Pro", monospace;
+    }
+}
+
+
+
+@media screen and (max-width: 1000px) {
+
+    .popup{
+        .MuiDialog-container{
+            .MuiPaper-root{
+                max-width: 65vw;
+            }
+        }
+    }
+}
+
+
+
+@media screen and (max-width: 650px) {
+
+    .popup{
+        .MuiDialog-container{
+            .MuiPaper-root{
+                max-width: 85vw;
+            }
+        }
+        .popup_container{
+            padding: 2rem;
+        }
+    }
+}
+
+
+
+@media screen and (max-width: 500px) {
+
+    .popup{
+        .MuiDialog-container{
+            .MuiPaper-root{
+                max-width: 95vw;
+            }
+        }
+        .popup_container{
+            padding: 1rem;
+        }
+    }
+}

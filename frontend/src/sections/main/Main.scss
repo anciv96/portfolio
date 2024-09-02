@@ -1,0 +1,30 @@
+main{
+	padding: 0 6.875rem;
+	margin-bottom: 8rem;
+}
+
+@media screen and (max-width: 1350px) {
+    main{
+        padding: 2rem 5rem;
+    }
+    
+}
+
+@media screen and (max-width: 1150px) {
+    main{
+        padding: 2rem 3.5rem;
+		font-size: .875rem;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    main{
+        padding: 2rem;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    main{
+        padding: 1rem;
+    }
+}

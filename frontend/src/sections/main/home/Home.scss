@@ -1,0 +1,107 @@
+.main__home{
+    font-family: "Playfair Display", serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 7.5rem;
+
+    .main_text{
+        font-size: 4rem;
+        color: #D4D4D4;
+        b{
+            color: #fff;
+        }
+    }
+    .main__home_contacts{
+        li{
+            width: 3.125rem;
+            height: 3.125rem;
+            border-radius: 50%;
+            background: #D4D4D4;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+    }
+}
+
+@media screen and (max-width: 1150px) {
+    .main__home{
+        margin-top: 4rem;
+        .main_text{
+            font-size: 3rem;
+        }
+    }
+}
+
+
+@media screen and (max-width: 1000px) {
+    .main__home{
+        margin-top: 2rem;
+        .main_text{
+            font-size: 3rem;
+        }
+        .main__home_contacts{
+            li{
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .main__home{
+        margin-top: 0rem;
+        .main_text{
+            font-size: 2.75rem;
+        }
+    }
+}
+
+
+@media screen and (max-width: 650px) {
+    .main__home{
+        display: flex;
+        align-items: start;
+        flex-direction: column;
+        gap: 3.5rem;
+        margin-top: 1rem;
+        .main_text{
+            font-size: 2.5rem;
+        }
+        .main__home_contacts{
+            display: flex;
+            gap: 1.25rem;
+            li{
+                width: 2rem;
+                height: 2rem;
+                margin-bottom: 0rem;
+            }
+        }
+    }
+}
+
+
+
+@media screen and (max-width: 500px) {
+    .main__home{
+        flex-direction: column;
+        gap: 3.5rem;
+        margin-top: 5rem;
+        .main_text{
+            font-size: 2.5rem;
+        }
+        .main__home_contacts{
+            display: flex;
+            gap: 1.25rem;
+            li{
+                width: 3rem;
+                height: 3rem;
+                margin-bottom: 0rem;
+            }
+        }
+    }
+}

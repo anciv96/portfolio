@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from sqladmin import Admin
 
 from admin.feedback_admin import FeedbackAdmin
@@ -12,8 +13,26 @@ from config import JWT_KEY
 from services.user_services import AdminAuth
 
 
+def init_cors(app):
+    origins = [
+        "http://127.0.0.1:3000",
+        "http://localhost:3000"
+    ]
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=['*'],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+
+
 def create_app() -> FastAPI:
     app = FastAPI(title='Portfolio')
+    init_cors(app)
+
     app.include_router(feedbacks.router)
     app.include_router(projects.router)
     app.include_router(order.router)
@@ -44,6 +63,5 @@ app = create_app()
 
 @app.on_event('startup')
 async def startup():
-
     await init_admin(app)
     await init_db()
